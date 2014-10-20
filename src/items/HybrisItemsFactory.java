@@ -61,5 +61,4 @@ public class HybrisItemsFactory implements ToolWindowFactory
          }
       }
    }
-
 }

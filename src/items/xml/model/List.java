@@ -17,7 +17,7 @@ public interface List extends DomElement {
 	 * @return the list of Article children.
 	 */
 	@NotNull
-	List<Article> getArticles();
+	java.util.List<Article> getArticles();
 	/**
 	 * Adds new child to the list of Article children.
 	 * @return created child
