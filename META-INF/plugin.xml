@@ -26,13 +26,13 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-     <toolWindow id="hybrisItems" anchor="right" factoryClass="items.HybrisItemsFactory">
+     <toolWindow id="Hybris Items" anchor="right" factoryClass="hybrisplugin.items.HybrisItemsFactory">
 
      </toolWindow>
 
      <projectService
-             serviceInterface="items.service.HybrisItemsService"
-             serviceImplementation="items.service.impl.HybrisItemsServiceImpl">
+             serviceInterface="hybrisplugin.items.service.HybrisItemsService"
+             serviceImplementation="hybrisplugin.items.service.HybrisItemsService">
 
      </projectService>
 
