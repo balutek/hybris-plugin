@@ -1,11 +1,19 @@
 package hybrisplugin.items;
 
+import com.intellij.ide.actions.GotoLineAction;
+import com.intellij.ide.actions.OpenFileAction;
+import com.intellij.lang.PsiBuilderFactory;
 import com.intellij.lang.StdLanguages;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.editor.impl.LineSet;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.source.parsing.xml.XmlBuilder;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
@@ -26,9 +34,10 @@ import javax.swing.event.TreeSelectionListener;
 public class HybrisItemsFactory implements ToolWindowFactory
 {
    @Override
-   public void createToolWindowContent(final Project project, ToolWindow toolWindow)
+   public void createToolWindowContent(final Project project, final ToolWindow toolWindow)
    {
-      XmlFile opocoreItems = (XmlFile)FilenameIndex.getFilesByName(project, "opocore-items.xml", GlobalSearchScope.allScope(project))[0].getViewProvider().getPsi(StdLanguages.XML);
+      final XmlFile opocoreItems = (XmlFile)FilenameIndex.getFilesByName(project, "opocore-items.xml", GlobalSearchScope.allScope(project))[0].getViewProvider().getPsi(StdLanguages.XML);
+
       XmlTreeModel xmlTreeModel = new XmlTreeModel(opocoreItems.getRootTag());
       XmlTree xmlTree = new XmlTree(xmlTreeModel);
 
@@ -37,7 +46,10 @@ public class HybrisItemsFactory implements ToolWindowFactory
          @Override
          public void valueChanged(TreeSelectionEvent e)
          {
+            XmlTag currentXmlTag = (XmlTag) e.getPath().getLastPathComponent();
 
+            OpenFileDescriptor descriptor = new OpenFileDescriptor(project, opocoreItems.getVirtualFile(), currentXmlTag.getTextOffset());
+            FileEditorManager.getInstance(project).openTextEditor(descriptor, true);
          }
       });
 
