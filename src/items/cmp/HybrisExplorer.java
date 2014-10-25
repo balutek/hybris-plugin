@@ -1,12 +1,14 @@
 package items.cmp;
 
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.util.IconUtil;
-import items.action.CheckboxListPopupAction;
-import items.action.SearchFieldAction;
+import items.action.checkbox.CheckboxElement;
+import items.action.checkbox.CheckboxListPopupAction;
+import items.action.checkbox.ModuleCheckbox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +33,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
    {
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
 
-      actionGroup.add(new CheckboxListPopupAction(project));
+      actionGroup.add(new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon()));
 //      actionGroup.add(new SearchFieldAction());
 
       final ActionToolbar actionToolbar =
@@ -41,7 +43,16 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       return buttonPanel;
    }
 
-
+   private CheckboxElement[] createModuleCheckboxes()
+   {
+      Module[] modules = ModuleManager.getInstance(project).getModules();
+      CheckboxElement[] checkboxElements = new CheckboxElement[modules.length];
+      for (int i = 0; i < modules.length; ++i)
+      {
+         checkboxElements[i] = new ModuleCheckbox(modules[i]);
+      }
+      return checkboxElements;
+   }
 
 
 }
