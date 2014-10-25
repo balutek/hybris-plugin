@@ -50,7 +50,7 @@ public class HybrisItemsFactory implements ToolWindowFactory
 
       JLabel someLabel = new JLabel("Some stupid text.");
       someLabel.addMouseListener(new GoToLineListener(project, opocoreItems.getVirtualFile(), false, lineInEditor));
-      toolWindow.getComponent().add(new HybrisExplorer());
+      toolWindow.getComponent().add(new HybrisExplorer(project));
    }
 
 }
