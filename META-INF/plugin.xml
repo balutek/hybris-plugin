@@ -26,7 +26,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-     <toolWindow id="hybrisItems" anchor="right" factoryClass="items.HybrisItemsFactory">
+     <toolWindow id="Hybris Items" anchor="right" factoryClass="items.HybrisItemsFactory">
 
      </toolWindow>
 
