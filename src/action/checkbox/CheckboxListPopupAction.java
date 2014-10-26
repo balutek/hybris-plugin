@@ -1,16 +1,12 @@
-package items.action.checkbox;
+package action.checkbox;
 
+import listener.ModulesSelectionListener;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.ex.CheckboxAction;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
-import com.intellij.openapi.actionSystem.impl.ActionButton;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.AnActionButton;
-import com.intellij.util.IconUtil;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 
 /**
@@ -22,10 +18,15 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
 
    private CheckboxElement[] checkboxElements;
 
+   private Icon buttonIcon;
+
+   private PopupMenuListener popupMenuListener;
+
    public CheckboxListPopupAction(CheckboxElement[] checkboxElements, Icon icon)
    {
       super(icon);
       this.checkboxElements = checkboxElements;
+      this.buttonIcon = icon;
    }
 
    @Override
@@ -40,7 +41,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
 
       final DefaultActionGroup buttonActionGroup = new DefaultActionGroup();
 
-      buttonActionGroup.add(new AnAction(IconUtil.getAddClassIcon())
+      buttonActionGroup.add(new AnAction(buttonIcon)
       {
          @Override
          public void actionPerformed(AnActionEvent e)
@@ -60,16 +61,6 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       return checkboxListPopupMenuWrapper;
    }
 
-   private boolean[] createIsModuleSelectedArray(int numberOfModules)
-   {
-      boolean[] isModuleSelected = new boolean[numberOfModules];
-      for (int i = 0; i < numberOfModules; ++i)
-      {
-         isModuleSelected[i] = false;
-      }
-      return isModuleSelected;
-   }
-
    private void showCheckboxListPopup(Component component, int x, int y)
    {
       DefaultActionGroup actionGroup = new DefaultActionGroup();
@@ -77,8 +68,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       for (int i = 0; i < checkboxElements.length; ++i)
       {
          final CheckboxElement checkboxElement = checkboxElements[i];
-         final int currentModuleIndex = i;
-         CheckboxAction selectModuleAction = new CheckboxAction(checkboxElement.getName())
+         CheckboxAction selectElementAction = new CheckboxAction(checkboxElement.getName())
          {
             @Override
             public boolean isSelected(AnActionEvent e)
@@ -92,13 +82,28 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
                checkboxElement.setSelected(state);
             }
          };
-         actionGroup.add(selectModuleAction);
+         actionGroup.add(selectElementAction);
       }
 
       final ActionPopupMenu checkboxListPopupMenu =
               ActionManager.getInstance().createActionPopupMenu(ActionPlaces.EDITOR_POPUP, actionGroup);
 
-      checkboxListPopupMenu.getComponent().show(component, x, y);
+      if(popupMenuListener != null)
+      {
+         checkboxListPopupMenu.getComponent().addPopupMenuListener(popupMenuListener);
+      }
+
+      checkboxListPopupMenu.getComponent().show(component, 0, y);
+   }
+
+   public PopupMenuListener getPopupMenuListener()
+   {
+      return popupMenuListener;
+   }
+
+   public void setPopupMenuListener(PopupMenuListener popupMenuListener)
+   {
+      this.popupMenuListener = popupMenuListener;
    }
 
 }

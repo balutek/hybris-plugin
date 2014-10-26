@@ -1,4 +1,4 @@
-package items.cmp;
+package cmp;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.module.Module;
@@ -6,9 +6,10 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.util.IconUtil;
-import items.action.checkbox.CheckboxElement;
-import items.action.checkbox.CheckboxListPopupAction;
-import items.action.checkbox.ModuleCheckbox;
+import action.checkbox.CheckboxElement;
+import action.checkbox.CheckboxListPopupAction;
+import action.checkbox.ModuleCheckbox;
+import listener.ModulesSelectionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,14 +28,24 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       this.project = project;
 
       setToolbar(createToolbarPanel());
+      setContent(createContent());
+   }
+
+   private JPanel createContent()
+   {
+      return null;
    }
 
    private JPanel createToolbarPanel()
    {
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
 
-      actionGroup.add(new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon()));
-//      actionGroup.add(new SearchFieldAction());
+      CheckboxListPopupAction listPopupAction =
+              new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
+      ModulesSelectionListener modulesSelectionListener = new ModulesSelectionListener(project);
+      listPopupAction.setPopupMenuListener(modulesSelectionListener);
+
+      actionGroup.add(listPopupAction);
 
       final ActionToolbar actionToolbar =
               ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);

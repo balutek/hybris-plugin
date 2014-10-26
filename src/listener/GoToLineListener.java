@@ -1,4 +1,4 @@
-package items.listener;
+package listener;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;

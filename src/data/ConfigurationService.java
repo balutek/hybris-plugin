@@ -1,10 +1,10 @@
-package items.data;
+package data;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -24,10 +24,9 @@ import java.util.HashMap;
         })
 public class ConfigurationService implements PersistentStateComponent<ConfigurationService>
 {
-   private HashMap<String, Boolean> selectedModulesNames;
+   private HashMap<String, Boolean> modulesSelectionMap = new HashMap<String, Boolean>();
 
-   private ConfigurationService(){}
-
+   @NotNull
    public static ConfigurationService getInstance(Project project)
    {
       return ServiceManager.getService(project, ConfigurationService.class);
@@ -37,10 +36,6 @@ public class ConfigurationService implements PersistentStateComponent<Configurat
    @Override
    public ConfigurationService getState()
    {
-      if(selectedModulesNames == null)
-      {
-         selectedModulesNames = new HashMap<String, Boolean>();
-      }
       return this;
    }
 
@@ -50,30 +45,24 @@ public class ConfigurationService implements PersistentStateComponent<Configurat
       XmlSerializerUtil.copyBean(state, this);
    }
 
-   public HashMap<String, Boolean> getSelectedModulesNames()
+   public HashMap<String, Boolean> getModulesSelectionMap()
    {
-      return selectedModulesNames;
+      return modulesSelectionMap;
    }
-
-   public void setSelectedModulesNames(HashMap<String, Boolean> selectedModulesNames)
-   {
-      this.selectedModulesNames = selectedModulesNames;
-   }
-
 
    public boolean isModuleSelected(Module module)
    {
-      Boolean moduleSelected = selectedModulesNames.get(module.getName());
+      Boolean moduleSelected = modulesSelectionMap.get(module.getName());
       return moduleSelected != null && moduleSelected;
    }
 
    public void selectModule(Module module)
    {
-      selectedModulesNames.put(module.getName(), true);
+      modulesSelectionMap.put(module.getName(), true);
    }
 
    public void deselectModule(Module module)
    {
-      selectedModulesNames.remove(module.getName());
+      modulesSelectionMap.remove(module.getName());
    }
 }

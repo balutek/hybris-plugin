@@ -1,4 +1,4 @@
-package items.action.checkbox;
+package action.checkbox;
 
 /**
  * @author Paweł Łabuda
