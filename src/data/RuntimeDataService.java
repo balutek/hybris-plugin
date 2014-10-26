@@ -11,8 +11,10 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import com.intellij.ui.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class RuntimeDataService
       return runtimeDataService;
    }
 
+   public List<Module> getSelectedModules()
+   {
+      return new ArrayList<Module>(selectedModulesItemsTagsMap.keySet());
+   }
 
    public void reloadSelectedModulesItemsTagsMap()
    {
@@ -41,7 +47,8 @@ public class RuntimeDataService
       Module[] modules = ModuleManager.getInstance(project).getModules();
       for (Module module : modules)
       {
-         if(modulesSelectionMap.get(module.getName()))
+         Boolean isModuleSelected = modulesSelectionMap.get(module.getName());
+         if(isModuleSelected != null && isModuleSelected)
          {
             List<XmlTag> moduleItems = findModuleItems(module);
             selectedModulesItemsTagsMap.put(module, moduleItems);
@@ -78,6 +85,11 @@ public class RuntimeDataService
       });
 
       return itemsXmlTags;
+   }
+
+   public List<XmlTag> getModuleItemsTags(Module module)
+   {
+      return selectedModulesItemsTagsMap.get(module);
    }
 
    public HashMap<Module, List<XmlTag>> getSelectedModulesItemsTagsMap()

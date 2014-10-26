@@ -1,12 +1,12 @@
 package action.checkbox;
 
-import listener.ModulesSelectionListener;
+import callback.AnActionCallback;
+import com.intellij.openapi.actionSystem.ex.AnActionListener;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.ex.CheckboxAction;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 
 /**
@@ -20,7 +20,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
 
    private Icon buttonIcon;
 
-   private PopupMenuListener popupMenuListener;
+   private AnActionCallback<Void> afterCheckboxSelectedCallback;
 
    public CheckboxListPopupAction(CheckboxElement[] checkboxElements, Icon icon)
    {
@@ -32,7 +32,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
    @Override
    public void actionPerformed(AnActionEvent e)
    {
-
+      int a=0;
    }
 
    @Override
@@ -80,6 +80,10 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
             public void setSelected(AnActionEvent e, boolean state)
             {
                checkboxElement.setSelected(state);
+               if (afterCheckboxSelectedCallback != null)
+               {
+                  afterCheckboxSelectedCallback.execute();
+               }
             }
          };
          actionGroup.add(selectElementAction);
@@ -88,22 +92,17 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       final ActionPopupMenu checkboxListPopupMenu =
               ActionManager.getInstance().createActionPopupMenu(ActionPlaces.EDITOR_POPUP, actionGroup);
 
-      if(popupMenuListener != null)
-      {
-         checkboxListPopupMenu.getComponent().addPopupMenuListener(popupMenuListener);
-      }
-
       checkboxListPopupMenu.getComponent().show(component, 0, y);
    }
 
-   public PopupMenuListener getPopupMenuListener()
+   public AnActionCallback<Void> getAfterCheckboxSelectedCallback()
    {
-      return popupMenuListener;
+      return afterCheckboxSelectedCallback;
    }
 
-   public void setPopupMenuListener(PopupMenuListener popupMenuListener)
+   public void setAfterCheckboxSelectedCallback(AnActionCallback<Void> afterCheckboxSelectedCallback)
    {
-      this.popupMenuListener = popupMenuListener;
+      this.afterCheckboxSelectedCallback = afterCheckboxSelectedCallback;
    }
 
 }
