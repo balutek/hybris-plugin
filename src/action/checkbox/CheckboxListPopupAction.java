@@ -32,7 +32,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
    @Override
    public void actionPerformed(AnActionEvent e)
    {
-      int a=0;
+
    }
 
    @Override

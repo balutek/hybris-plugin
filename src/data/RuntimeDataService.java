@@ -58,7 +58,7 @@ public class RuntimeDataService
 
    public List<XmlTag> findModuleItems(Module module)
    {
-      String moduleItemsXmlFileName = module.getName() + ".xml";
+      String moduleItemsXmlFileName = module.getName() + "-items.xml";
       Project project = module.getProject();
       GlobalSearchScope searchScope = GlobalSearchScope.moduleScope(module);
       PsiFile[] itemsXmlPsiFiles = FilenameIndex.getFilesByName(project, moduleItemsXmlFileName, searchScope);

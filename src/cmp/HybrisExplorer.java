@@ -8,17 +8,16 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.psi.xml.XmlTag;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.IconUtil;
 import action.checkbox.CheckboxElement;
 import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import data.RuntimeDataService;
-import listener.ModulesSelectionListener;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
 import java.awt.BorderLayout;
 import java.util.List;
 
@@ -39,9 +38,13 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       setContent(createContent());
    }
 
-   private JPanel createContent()
+   private JComponent createContent()
    {
-      JPanel itemTreesWrapper = new JPanel(new VerticalLayout());
+      JBScrollPane itemTreesScroll = new JBScrollPane();
+
+      JPanel itemTreesWrapper = new JPanel();
+      itemTreesWrapper.setLayout(new BoxLayout(itemTreesWrapper, BoxLayout.X_AXIS));
+      itemTreesScroll.add(itemTreesWrapper);
 
       List<Module> modules = RuntimeDataService.getInstance(project).getSelectedModules();
       for (Module module : modules)
@@ -52,7 +55,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
          itemTreesWrapper.add(tree);
       }
 
-      return itemTreesWrapper;
+      return itemTreesScroll;
    }
 
    private JPanel createToolbarPanel()
