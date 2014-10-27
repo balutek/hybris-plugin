@@ -1,30 +1,20 @@
 package hybrisplugin.items;
 
-import com.intellij.ide.actions.GotoLineAction;
-import com.intellij.ide.actions.OpenFileAction;
-import com.intellij.lang.PsiBuilderFactory;
 import com.intellij.lang.StdLanguages;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.editor.impl.LineSet;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.parsing.xml.XmlBuilder;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.content.impl.ContentImpl;
 import hybrisplugin.items.xml.tree.XmlTree;
 import hybrisplugin.items.xml.tree.XmlTreeModel;
 
-import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 

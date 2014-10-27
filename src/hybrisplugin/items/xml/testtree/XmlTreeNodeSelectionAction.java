@@ -1,4 +1,4 @@
-package hybrisplugin.items.xml.tree;
+package hybrisplugin.items.xml.testtree;
 
 /**
  * @author Paweł Łabuda
