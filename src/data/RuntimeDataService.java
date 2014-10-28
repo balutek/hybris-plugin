@@ -25,15 +25,54 @@ public class RuntimeDataService
 {
    private static final String XML_TAG_NAME_ITEMTYPE = "itemtype";
 
+   private ConfigurationService configurationService;
+
    private Project project;
 
    private HashMap<Module, List<XmlTag>> selectedModulesItemsTagsMap = new HashMap<Module, List<XmlTag>>();
 
+   private Module recentlyAddedModule = null;
+
+   private Module recentlyRemovedModule = null;
+
    public static RuntimeDataService getInstance(Project project)
    {
       RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
+      runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
       runtimeDataService.setProject(project);
       return runtimeDataService;
+   }
+
+   private void setConfigurationService(ConfigurationService configurationService)
+   {
+      this.configurationService = configurationService;
+   }
+
+   public boolean isModuleSelected(Module module)
+   {
+      return configurationService.isModuleSelected(module.getName());
+   }
+
+   public void selectModule(Module module)
+   {
+      recentlyAddedModule = module;
+      configurationService.selectModule(module.getName());
+   }
+
+   public void deselectModule(Module module)
+   {
+      recentlyRemovedModule = module;
+      configurationService.deselectModule(module.getName());
+   }
+
+   public Module getRecentlyAddedModule()
+   {
+      return recentlyAddedModule;
+   }
+
+   public Module getRecentlyRemovedModule()
+   {
+      return recentlyRemovedModule;
    }
 
    public List<Module> getSelectedModules()
@@ -48,10 +87,17 @@ public class RuntimeDataService
       for (Module module : modules)
       {
          Boolean isModuleSelected = modulesSelectionMap.get(module.getName());
-         if(isModuleSelected != null && isModuleSelected)
+         if(isModuleSelected != null)
          {
-            List<XmlTag> moduleItems = findModuleItems(module);
-            selectedModulesItemsTagsMap.put(module, moduleItems);
+            if(isModuleSelected)
+            {
+               List<XmlTag> moduleItems = findModuleItems(module);
+               selectedModulesItemsTagsMap.put(module, moduleItems);
+            }
+            else
+            {
+
+            }
          }
       }
    }
@@ -72,7 +118,7 @@ public class RuntimeDataService
 
       final List<XmlTag> itemsXmlTags = new ArrayList<XmlTag>();
 
-      itemsXml.accept(new XmlElementVisitor()
+      new XmlElementVisitor()
       {
          @Override
          public void visitXmlTag(XmlTag tag)
@@ -82,7 +128,7 @@ public class RuntimeDataService
                itemsXmlTags.add(tag);
             }
          }
-      });
+      }.visitFile(itemsXml);
 
       return itemsXmlTags;
    }

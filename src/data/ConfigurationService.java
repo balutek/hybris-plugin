@@ -10,6 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 /**
+ * Configuration service methods can't be called by interface components
+ *
+ * Try to operate only on simple values like booleans, integers, strings etc.
+ *
  * @author Paweł Łabuda
  */
 
@@ -24,7 +28,7 @@ import java.util.HashMap;
         })
 public class ConfigurationService implements PersistentStateComponent<ConfigurationService>
 {
-   private HashMap<String, Boolean> modulesSelectionMap = new HashMap<String, Boolean>();
+   public HashMap<String, Boolean> modulesSelectionMap = new HashMap<String, Boolean>();
 
    @NotNull
    public static ConfigurationService getInstance(Project project)
@@ -50,19 +54,19 @@ public class ConfigurationService implements PersistentStateComponent<Configurat
       return modulesSelectionMap;
    }
 
-   public boolean isModuleSelected(Module module)
+   public boolean isModuleSelected(String moduleName)
    {
-      Boolean moduleSelected = modulesSelectionMap.get(module.getName());
+      Boolean moduleSelected = modulesSelectionMap.get(moduleName);
       return moduleSelected != null && moduleSelected;
    }
 
-   public void selectModule(Module module)
+   public void selectModule(String moduleName)
    {
-      modulesSelectionMap.put(module.getName(), true);
+      modulesSelectionMap.put(moduleName, true);
    }
 
-   public void deselectModule(Module module)
+   public void deselectModule(String moduleName)
    {
-      modulesSelectionMap.remove(module.getName());
+      modulesSelectionMap.remove(moduleName);
    }
 }
