@@ -18,16 +18,6 @@ public class HybrisPluginFactory implements ToolWindowFactory
    @Override
    public void createToolWindowContent(final Project project, ToolWindow toolWindow)
    {
-
-      XmlFile opocoreItems = (XmlFile)FilenameIndex
-              .getFilesByName(project, "opocore-items.xml", GlobalSearchScope.allScope(project))[0]
-              .getViewProvider()
-              .getPsi(StdLanguages.XML);
-
-      int lineInEditor = opocoreItems.getRootTag().getSubTags()[4].getTextOffset();
-
-      JLabel someLabel = new JLabel("Some stupid text.");
-      someLabel.addMouseListener(new GoToLineListener(project, opocoreItems.getVirtualFile(), false, lineInEditor));
       toolWindow.getComponent().add(new HybrisExplorer(project));
    }
 

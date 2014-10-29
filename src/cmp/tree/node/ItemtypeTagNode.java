@@ -21,6 +21,6 @@ public class ItemtypeTagNode extends DefaultMutableTreeNode
    @Override
    public String toString()
    {
-      return itemtypeXmlTag.getAttributeValue("code") + " - " + itemtypeXmlTag.getAttributeValue("xs:code") + " - " + itemtypeXmlTag.getAttributeValue("xsi:code");
+      return itemtypeXmlTag.getAttributeValue("code");
    }
 }

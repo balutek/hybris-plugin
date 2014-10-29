@@ -62,17 +62,6 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
-//      ModulesSelectionCallback modulesSelectionCallback = new ModulesSelectionCallback(project)
-//      {
-//         @Override
-//         public Void execute()
-//         {
-//            super.execute();
-//            HybrisExplorer.this.setContent(createContent());
-//            return null;
-//         }
-//      };
-//      listPopupAction.setAfterCheckboxSelectedCallback(modulesSelectionCallback);
 
       actionGroup.add(listPopupAction);
 
