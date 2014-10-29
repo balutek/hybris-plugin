@@ -42,6 +42,9 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JComponent createContent()
    {
+      Module[] modules = ModuleManager.getInstance(project).getModules();
+      RuntimeDataService.getInstance(project).selectModule(modules[9]);
+      RuntimeDataService.getInstance(project).selectModule(modules[10]);
 
       List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
       SelectedModulesNode selectedModulesNode = new SelectedModulesNode(selectedModules);

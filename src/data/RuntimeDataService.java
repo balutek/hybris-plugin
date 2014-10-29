@@ -27,6 +27,8 @@ public class RuntimeDataService
 {
    private static final String XML_TAG_NAME_ITEMTYPE = "itemtype";
 
+   private static RuntimeDataService instance = null;
+
    private ConfigurationService configurationService;
 
    private Project project;
@@ -39,11 +41,18 @@ public class RuntimeDataService
 
    public static RuntimeDataService getInstance(Project project)
    {
-      RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
-      runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
-      runtimeDataService.setProject(project);
-      runtimeDataService.initialize();
-      return runtimeDataService;
+      if(instance == null)
+      {
+         RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
+         runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
+         runtimeDataService.setProject(project);
+         runtimeDataService.initialize();
+         return runtimeDataService;
+      }
+      else
+      {
+         return instance;
+      }
    }
 
    private void initialize()
@@ -131,7 +140,7 @@ public class RuntimeDataService
    {
       String moduleItemsXmlFileName = module.getName() + "-items.xml";
       Project project = module.getProject();
-      GlobalSearchScope searchScope = GlobalSearchScope.moduleScope(module);
+      GlobalSearchScope searchScope = GlobalSearchScope.allScope(project);
       PsiFile[] itemsXmlPsiFiles = FilenameIndex.getFilesByName(project, moduleItemsXmlFileName, searchScope);
 
       if (itemsXmlPsiFiles.length == 0)
