@@ -1,54 +1,37 @@
 package cmp.tree.node;
 
+import com.intellij.openapi.module.Module;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author Paweł Łabuda
  */
-public class SelectedModulesNode implements TreeNode
+public class SelectedModulesNode extends DefaultMutableTreeNode
 {
+   private List<Module> selectedModules;
 
-
-   @Override
-   public TreeNode getChildAt(int childIndex)
+   public SelectedModulesNode(List<Module> selectedModules)
    {
-      return null;
+      this.selectedModules = selectedModules;
+
+      initialize();
+   }
+
+   private void initialize()
+   {
+      for (Module selectedModule : selectedModules)
+      {
+         add(new ModuleNode(selectedModule));
+      }
    }
 
    @Override
-   public int getChildCount()
+   public String toString()
    {
-      return 0;
-   }
-
-   @Override
-   public TreeNode getParent()
-   {
-      return null;
-   }
-
-   @Override
-   public int getIndex(TreeNode node)
-   {
-      return 0;
-   }
-
-   @Override
-   public boolean getAllowsChildren()
-   {
-      return false;
-   }
-
-   @Override
-   public boolean isLeaf()
-   {
-      return false;
-   }
-
-   @Override
-   public Enumeration children()
-   {
-      return null;
+      return "Wybrane moduły :)";
    }
 }

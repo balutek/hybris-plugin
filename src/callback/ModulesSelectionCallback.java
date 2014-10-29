@@ -18,7 +18,7 @@ public class ModulesSelectionCallback implements AnActionCallback<Void>
    @Override
    public Void execute()
    {
-      RuntimeDataService.getInstance(project).reloadSelectedModulesItemsTagsMap();
+//      RuntimeDataService.getInstance(project).reloadSelectedModulesItemsTagsMap();
       return null;
    }
 }

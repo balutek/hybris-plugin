@@ -2,6 +2,7 @@ package cmp;
 
 import callback.ModulesSelectionCallback;
 import cmp.tree.HybrisItemsTreeModel;
+import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -18,6 +19,7 @@ import data.RuntimeDataService;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.BorderLayout;
 import java.util.List;
 
@@ -40,22 +42,15 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JComponent createContent()
    {
-      JBScrollPane itemTreesScroll = new JBScrollPane();
 
-      JPanel itemTreesWrapper = new JPanel();
-      itemTreesWrapper.setLayout(new BoxLayout(itemTreesWrapper, BoxLayout.X_AXIS));
-      itemTreesScroll.add(itemTreesWrapper);
+      List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
+      SelectedModulesNode selectedModulesNode = new SelectedModulesNode(selectedModules);
 
-      List<Module> modules = RuntimeDataService.getInstance(project).getSelectedModules();
-      for (Module module : modules)
-      {
-         List<XmlTag> moduleItemsXml = RuntimeDataService.getInstance(project).getModuleItemsTags(module);
-         HybrisItemsTreeModel moduleTreeModel = new HybrisItemsTreeModel(project, module.getName(), moduleItemsXml);
-         Tree tree = new Tree(moduleTreeModel);
-         itemTreesWrapper.add(tree);
-      }
+      DefaultTreeModel itemsModel = new DefaultTreeModel(selectedModulesNode);
 
-      return itemTreesScroll;
+      Tree tree = new Tree(itemsModel);
+
+      return tree;
    }
 
    private JPanel createToolbarPanel()
@@ -64,17 +59,17 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
-      ModulesSelectionCallback modulesSelectionCallback = new ModulesSelectionCallback(project)
-      {
-         @Override
-         public Void execute()
-         {
-            super.execute();
-            HybrisExplorer.this.setContent(createContent());
-            return null;
-         }
-      };
-      listPopupAction.setAfterCheckboxSelectedCallback(modulesSelectionCallback);
+//      ModulesSelectionCallback modulesSelectionCallback = new ModulesSelectionCallback(project)
+//      {
+//         @Override
+//         public Void execute()
+//         {
+//            super.execute();
+//            HybrisExplorer.this.setContent(createContent());
+//            return null;
+//         }
+//      };
+//      listPopupAction.setAfterCheckboxSelectedCallback(modulesSelectionCallback);
 
       actionGroup.add(listPopupAction);
 

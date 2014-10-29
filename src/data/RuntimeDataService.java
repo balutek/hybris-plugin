@@ -12,6 +12,8 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.ListUtil;
+import com.intellij.util.containers.OrderedSet;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,16 +33,32 @@ public class RuntimeDataService
 
    private HashMap<Module, List<XmlTag>> selectedModulesItemsTagsMap = new HashMap<Module, List<XmlTag>>();
 
-   private Module recentlyAddedModule = null;
-
-   private Module recentlyRemovedModule = null;
+//   private Module recentlyAddedModule = null;
+//
+//   private Module recentlyRemovedModule = null;
 
    public static RuntimeDataService getInstance(Project project)
    {
       RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
       runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
       runtimeDataService.setProject(project);
+      runtimeDataService.initialize();
       return runtimeDataService;
+   }
+
+   private void initialize()
+   {
+      HashMap<String, Boolean> modulesSelectionMap = ConfigurationService.getInstance(project).getModulesSelectionMap();
+      Module[] modules = ModuleManager.getInstance(project).getModules();
+      for (Module module : modules)
+      {
+         Boolean isModuleSelected = modulesSelectionMap.get(module.getName());
+         if(isModuleSelected != null && isModuleSelected)
+         {
+            List<XmlTag> moduleItems = findModuleItems(module);
+            selectedModulesItemsTagsMap.put(module, moduleItems);
+         }
+      }
    }
 
    private void setConfigurationService(ConfigurationService configurationService)
@@ -55,52 +73,59 @@ public class RuntimeDataService
 
    public void selectModule(Module module)
    {
-      recentlyAddedModule = module;
+//      recentlyAddedModule = module;
       configurationService.selectModule(module.getName());
+
+      List<XmlTag> moduleItems = findModuleItems(module);
+      selectedModulesItemsTagsMap.put(module, moduleItems);
    }
 
    public void deselectModule(Module module)
    {
-      recentlyRemovedModule = module;
+//      recentlyRemovedModule = module;
       configurationService.deselectModule(module.getName());
-   }
 
-   public Module getRecentlyAddedModule()
-   {
-      return recentlyAddedModule;
-   }
-
-   public Module getRecentlyRemovedModule()
-   {
-      return recentlyRemovedModule;
+      selectedModulesItemsTagsMap.remove(module);
    }
 
    public List<Module> getSelectedModules()
    {
       return new ArrayList<Module>(selectedModulesItemsTagsMap.keySet());
    }
+   //
+//   public Module getRecentlyAddedModule()
+//   {
+//      return recentlyAddedModule;
+//   }
+//
+//   public Module getRecentlyRemovedModule()
+//   {
+//      return recentlyRemovedModule;
 
-   public void reloadSelectedModulesItemsTagsMap()
-   {
-      HashMap<String, Boolean> modulesSelectionMap = ConfigurationService.getInstance(project).getModulesSelectionMap();
-      Module[] modules = ModuleManager.getInstance(project).getModules();
-      for (Module module : modules)
-      {
-         Boolean isModuleSelected = modulesSelectionMap.get(module.getName());
-         if(isModuleSelected != null)
-         {
-            if(isModuleSelected)
-            {
-               List<XmlTag> moduleItems = findModuleItems(module);
-               selectedModulesItemsTagsMap.put(module, moduleItems);
-            }
-            else
-            {
 
-            }
-         }
-      }
-   }
+//   }
+
+//   public void reloadSelectedModulesItemsTagsMap()
+//   {
+//      HashMap<String, Boolean> modulesSelectionMap = ConfigurationService.getInstance(project).getModulesSelectionMap();
+//      Module[] modules = ModuleManager.getInstance(project).getModules();
+//      for (Module module : modules)
+//      {
+//         Boolean isModuleSelected = modulesSelectionMap.get(module.getName());
+//         if(isModuleSelected != null)
+//         {
+//            if(isModuleSelected)
+//            {
+//               List<XmlTag> moduleItems = findModuleItems(module);
+//               selectedModulesItemsTagsMap.put(module, moduleItems);
+//            }
+//            else
+//            {
+//
+//            }
+//         }
+//      }
+//   }
 
    public List<XmlTag> findModuleItems(Module module)
    {

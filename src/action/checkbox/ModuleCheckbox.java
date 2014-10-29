@@ -3,6 +3,7 @@ package action.checkbox;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import data.ConfigurationService;
+import data.RuntimeDataService;
 
 /**
  * @author Paweł Łabuda
@@ -22,7 +23,7 @@ public class ModuleCheckbox implements CheckboxElement
    @Override
    public boolean isSelected()
    {
-      return ConfigurationService.getInstance(project).isModuleSelected(module);
+      return RuntimeDataService.getInstance(project).isModuleSelected(module);
    }
 
    @Override
@@ -30,11 +31,11 @@ public class ModuleCheckbox implements CheckboxElement
    {
       if(state)
       {
-         ConfigurationService.getInstance(project).selectModule(module);
+         RuntimeDataService.getInstance(project).selectModule(module);
       }
       else
       {
-         ConfigurationService.getInstance(project).deselectModule(module);
+         RuntimeDataService.getInstance(project).deselectModule(module);
       }
    }
 
