@@ -36,4 +36,9 @@ public class ModuleNode extends DefaultMutableTreeNode
    {
       return module.getName();
    }
+
+   public Module getModule()
+   {
+      return module;
+   }
 }

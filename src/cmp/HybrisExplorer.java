@@ -4,6 +4,8 @@ import action.checkbox.CheckboxElement;
 import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import callback.ModulesSelectionCallbackCheckbox;
+import cmp.tree.HybrisExplorerTreeModel;
+import cmp.tree.HybrisExplorerTreeModelListener;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -19,8 +21,6 @@ import com.intellij.util.IconUtil;
 import data.RuntimeDataService;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private Tree tree;
 
-   private TreeModel treeModel;
+   private HybrisExplorerTreeModel treeModel;
 
    private SelectedModulesNode root;
 
@@ -44,37 +44,37 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
       this.project = project;
 
+      initialize();
+
       setToolbar(createToolbarPanel());
       setContent(createContent());
    }
 
-   private JComponent createContent()
+   private void initialize()
    {
       List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
       root = new SelectedModulesNode(selectedModules);
-
-      treeModel = new DefaultTreeModel(root);
-
+      treeModel = new HybrisExplorerTreeModel(root);
       tree = new Tree(treeModel);
       tree.setEditable(true);
+      treeModel.addTreeModelListener(new HybrisExplorerTreeModelListener(tree));
 
+      final DefaultActionGroup actionGroup = new DefaultActionGroup();
+      CheckboxListPopupAction listPopupAction =
+              new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
+      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallbackCheckbox(project, treeModel));
+      actionGroup.add(listPopupAction);
+      actionToolbar =
+              ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
+   }
+
+   private JComponent createContent()
+   {
       return new JBScrollPane(tree);
    }
 
    private JComponent createToolbarPanel()
    {
-      final DefaultActionGroup actionGroup = new DefaultActionGroup();
-
-      CheckboxListPopupAction listPopupAction =
-              new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
-
-      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallbackCheckbox(root));
-
-      actionGroup.add(listPopupAction);
-
-      actionToolbar =
-              ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
-
       return actionToolbar.getComponent();
    }
 

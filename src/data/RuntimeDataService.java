@@ -32,6 +32,10 @@ public class RuntimeDataService
 
    private HashMap<Module, List<XmlTag>> selectedModulesItemsTagsMap = new LinkedHashMap<Module, List<XmlTag>>();
 
+   private Module recentlyAddedModule = null;
+
+   private Module recentlyRemovedModule = null;
+
    public static RuntimeDataService getInstance(Project project)
    {
       if(instance == null)
@@ -76,6 +80,7 @@ public class RuntimeDataService
    public void selectModule(Module module)
    {
       configurationService.selectModule(module.getName());
+      recentlyAddedModule = module;
 
       List<XmlTag> moduleItems = findModuleItems(module);
       selectedModulesItemsTagsMap.put(module, moduleItems);
@@ -84,6 +89,7 @@ public class RuntimeDataService
    public void deselectModule(Module module)
    {
       configurationService.deselectModule(module.getName());
+      recentlyRemovedModule = module;
 
       selectedModulesItemsTagsMap.remove(module);
    }
@@ -145,5 +151,25 @@ public class RuntimeDataService
    public void setProject(Project project)
    {
       this.project = project;
+   }
+
+   public Module getRecentlyAddedModule()
+   {
+      return recentlyAddedModule;
+   }
+
+   public Module getRecentlyRemovedModule()
+   {
+      return recentlyRemovedModule;
+   }
+
+   public void setRecentlyAddedModule(Module recentlyAddedModule)
+   {
+      this.recentlyAddedModule = recentlyAddedModule;
+   }
+
+   public void setRecentlyRemovedModule(Module recentlyRemovedModule)
+   {
+      this.recentlyRemovedModule = recentlyRemovedModule;
    }
 }
