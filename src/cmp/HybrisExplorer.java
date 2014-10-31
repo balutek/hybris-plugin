@@ -1,14 +1,13 @@
 package cmp;
 
 import callback.ModulesSelectionCallback;
-import cmp.tree.HybrisItemsTreeModel;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ex.CheckboxAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.IconUtil;
@@ -16,10 +15,10 @@ import action.checkbox.CheckboxElement;
 import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import data.RuntimeDataService;
-import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import java.awt.BorderLayout;
 import java.util.List;
 
@@ -29,6 +28,12 @@ import java.util.List;
 public class HybrisExplorer extends SimpleToolWindowPanel
 {
    private Project project;
+
+   private Tree tree;
+
+   private TreeModel treeModel;
+
+   private SelectedModulesNode root;
 
    public HybrisExplorer(Project project)
    {
@@ -42,35 +47,32 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JComponent createContent()
    {
-      Module[] modules = ModuleManager.getInstance(project).getModules();
-      RuntimeDataService.getInstance(project).selectModule(modules[9]);
-      RuntimeDataService.getInstance(project).selectModule(modules[10]);
-
       List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
-      SelectedModulesNode selectedModulesNode = new SelectedModulesNode(selectedModules);
+      root = new SelectedModulesNode(selectedModules);
 
-      DefaultTreeModel itemsModel = new DefaultTreeModel(selectedModulesNode);
+      treeModel = new DefaultTreeModel(root);
 
-      Tree tree = new Tree(itemsModel);
+      tree = new Tree(treeModel);
+      tree.setEditable(true);
 
-      return tree;
+      return new JBScrollPane(tree);
    }
 
-   private JPanel createToolbarPanel()
+   private JComponent createToolbarPanel()
    {
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
 
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
 
+      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(root));
+
       actionGroup.add(listPopupAction);
 
       final ActionToolbar actionToolbar =
               ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
 
-      final JPanel buttonPanel = new JPanel(new BorderLayout());
-      buttonPanel.add(actionToolbar.getComponent(), BorderLayout.CENTER);
-      return buttonPanel;
+      return actionToolbar.getComponent();
    }
 
    private CheckboxElement[] createModuleCheckboxes()

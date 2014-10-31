@@ -55,10 +55,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, buttonActionGroup,
               true);
 
-      JPanel checkboxListPopupMenuWrapper = new JPanel();
-      checkboxListPopupMenuWrapper.setLayout(new BorderLayout());
-      checkboxListPopupMenuWrapper.add(actionToolbar.getComponent(), BorderLayout.CENTER);
-      return checkboxListPopupMenuWrapper;
+      return actionToolbar.getComponent();
    }
 
    private void showCheckboxListPopup(Component component, int x, int y)

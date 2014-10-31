@@ -1,5 +1,6 @@
 package callback;
 
+import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.project.Project;
 import data.RuntimeDataService;
 
@@ -8,17 +9,17 @@ import data.RuntimeDataService;
  */
 public class ModulesSelectionCallback implements AnActionCallback<Void>
 {
-   private Project project;
+   private SelectedModulesNode root;
 
-   public ModulesSelectionCallback(Project project)
+   public ModulesSelectionCallback(SelectedModulesNode root)
    {
-      this.project = project;
+      this.root = root;
    }
 
    @Override
    public Void execute()
    {
-//      RuntimeDataService.getInstance(project).reloadSelectedModulesItemsTagsMap();
+
       return null;
    }
 }
