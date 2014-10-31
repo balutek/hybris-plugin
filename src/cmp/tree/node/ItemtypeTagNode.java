@@ -3,8 +3,6 @@ package cmp.tree.node;
 import com.intellij.psi.xml.XmlTag;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.util.Enumeration;
 
 /**
  * @author Paweł Łabuda

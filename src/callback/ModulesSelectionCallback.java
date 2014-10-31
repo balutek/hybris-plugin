@@ -1,8 +1,6 @@
 package callback;
 
 import cmp.tree.node.SelectedModulesNode;
-import com.intellij.openapi.project.Project;
-import data.RuntimeDataService;
 
 /**
  * @author Paweł Łabuda

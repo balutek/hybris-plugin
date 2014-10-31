@@ -11,11 +11,11 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.ui.ListUtil;
-import com.intellij.util.containers.OrderedSet;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Paweł Łabuda

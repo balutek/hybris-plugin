@@ -1,7 +1,6 @@
 package data;
 
 import com.intellij.openapi.components.*;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;

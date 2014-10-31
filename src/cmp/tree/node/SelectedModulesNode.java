@@ -3,8 +3,6 @@ package cmp.tree.node;
 import com.intellij.openapi.module.Module;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.util.Enumeration;
 import java.util.List;
 
 /**

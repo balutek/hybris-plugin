@@ -5,8 +5,6 @@ import com.intellij.psi.xml.XmlTag;
 import data.RuntimeDataService;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.util.Enumeration;
 import java.util.List;
 
 /**

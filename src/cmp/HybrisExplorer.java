@@ -1,9 +1,14 @@
 package cmp;
 
+import action.checkbox.CheckboxElement;
+import action.checkbox.CheckboxListPopupAction;
+import action.checkbox.ModuleCheckbox;
 import callback.ModulesSelectionCallback;
 import cmp.tree.node.SelectedModulesNode;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.actionSystem.ex.CheckboxAction;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionPlaces;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -11,15 +16,11 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.IconUtil;
-import action.checkbox.CheckboxElement;
-import action.checkbox.CheckboxListPopupAction;
-import action.checkbox.ModuleCheckbox;
 import data.RuntimeDataService;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import java.awt.BorderLayout;
 import java.util.List;
 
 /**
