@@ -3,7 +3,7 @@ package cmp;
 import action.checkbox.CheckboxElement;
 import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
-import callback.ModulesSelectionCallback;
+import callback.ModulesSelectionCallbackCheckbox;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -29,6 +29,8 @@ import java.util.List;
 public class HybrisExplorer extends SimpleToolWindowPanel
 {
    private Project project;
+
+   private ActionToolbar actionToolbar;
 
    private Tree tree;
 
@@ -66,11 +68,11 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
 
-      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(root));
+      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallbackCheckbox(root));
 
       actionGroup.add(listPopupAction);
 
-      final ActionToolbar actionToolbar =
+      actionToolbar =
               ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
 
       return actionToolbar.getComponent();

@@ -1,9 +1,10 @@
 package action.checkbox;
 
-import callback.AnActionCallback;
+import callback.AnCheckboxActionCallback;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.ex.CheckboxAction;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
+import com.intellij.openapi.actionSystem.impl.ActionButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,13 +14,13 @@ import java.awt.*;
  */
 public class CheckboxListPopupAction extends AnAction implements CustomComponentAction
 {
-   private ActionToolbar actionToolbar;
+   private JComponent actionButton;
 
    private CheckboxElement[] checkboxElements;
 
    private Icon buttonIcon;
 
-   private AnActionCallback<Void> afterCheckboxSelectedCallback;
+   private AnCheckboxActionCallback<Void> afterCheckboxSelectedCallback;
 
    public CheckboxListPopupAction(CheckboxElement[] checkboxElements, Icon icon)
    {
@@ -38,23 +39,16 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
    public JComponent createCustomComponent(Presentation presentation)
    {
 
-      final DefaultActionGroup buttonActionGroup = new DefaultActionGroup();
-
-      buttonActionGroup.add(new AnAction(buttonIcon)
+      AnAction buttonAction = new AnAction(buttonIcon)
       {
          @Override
          public void actionPerformed(AnActionEvent e)
          {
-            JComponent actionToolbarComponent = actionToolbar.getComponent();
-            showCheckboxListPopup(actionToolbarComponent, actionToolbarComponent.getWidth(),
-                    actionToolbarComponent.getHeight());
+            showCheckboxListPopup(actionButton, actionButton.getWidth(), actionButton.getHeight());
          }
-      });
-
-      actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, buttonActionGroup,
-              true);
-
-      return actionToolbar.getComponent();
+      };
+      actionButton = new ActionButton(buttonAction, presentation, ActionPlaces.EDITOR_TOOLBAR, new Dimension(20, 20));
+      return actionButton;
    }
 
    private void showCheckboxListPopup(Component component, int x, int y)
@@ -91,12 +85,12 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       checkboxListPopupMenu.getComponent().show(component, 0, y);
    }
 
-   public AnActionCallback<Void> getAfterCheckboxSelectedCallback()
+   public AnCheckboxActionCallback<Void> getAfterCheckboxSelectedCallback()
    {
       return afterCheckboxSelectedCallback;
    }
 
-   public void setAfterCheckboxSelectedCallback(AnActionCallback<Void> afterCheckboxSelectedCallback)
+   public void setAfterCheckboxSelectedCallback(AnCheckboxActionCallback<Void> afterCheckboxSelectedCallback)
    {
       this.afterCheckboxSelectedCallback = afterCheckboxSelectedCallback;
    }
