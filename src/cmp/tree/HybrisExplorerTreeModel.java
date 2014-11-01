@@ -22,7 +22,7 @@ public class HybrisExplorerTreeModel extends DefaultTreeModel
       if(module != null)
       {
          ModuleNode newModuleNode = new ModuleNode(module);
-         getSelectedModulesNode().add(newModuleNode);
+         insertNodeInto(newModuleNode, getSelectedModulesNode(), calculatePositionForNewModule(module));
       }
    }
 
@@ -37,7 +37,7 @@ public class HybrisExplorerTreeModel extends DefaultTreeModel
             ModuleNode currentModuleNode = (ModuleNode) currentChild;
             if(currentModuleNode.getModule().equals(module))
             {
-               selectedModulesNode.remove(currentModuleNode);
+               removeNodeFromParent(currentModuleNode);
                break;
             }
             currentChild = currentChild.getNextSibling();
@@ -49,4 +49,23 @@ public class HybrisExplorerTreeModel extends DefaultTreeModel
    {
       return (SelectedModulesNode) getRoot();
    }
+
+   private int calculatePositionForNewModule(Module module)
+   {
+      int position = 0;
+      SelectedModulesNode selectedModulesNode = getSelectedModulesNode();
+      DefaultMutableTreeNode currentChild = (ModuleNode) selectedModulesNode.getFirstChild();
+      while(currentChild != null)
+      {
+         ModuleNode currentModuleNode = (ModuleNode) currentChild;
+         if(currentModuleNode.getModule().getName().compareTo(module.getName()) > 0)
+         {
+            return position;
+         }
+         currentChild = currentChild.getNextSibling();
+         ++position;
+      }
+      return position;
+   }
+
 }
