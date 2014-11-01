@@ -3,6 +3,7 @@ package cmp.tree.node;
 import com.intellij.openapi.module.Module;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import java.util.List;
 
 /**
@@ -27,7 +28,16 @@ public class SelectedModulesNode extends DefaultMutableTreeNode
       }
    }
 
-
+   @Override
+   public void insert(MutableTreeNode newChild, int childIndex)
+   {
+      super.insert(newChild, childIndex);
+      if (newChild instanceof ModuleNode)
+      {
+         Module addedModule = ((ModuleNode)newChild).getModule();
+         selectedModules.add(childIndex, addedModule);
+      }
+   }
 
    @Override
    public String toString()

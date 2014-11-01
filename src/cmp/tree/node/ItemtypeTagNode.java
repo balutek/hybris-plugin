@@ -1,5 +1,6 @@
 package cmp.tree.node;
 
+import com.intellij.openapi.module.Module;
 import com.intellij.psi.xml.XmlTag;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,4 +22,15 @@ public class ItemtypeTagNode extends DefaultMutableTreeNode
    {
       return itemtypeXmlTag.getAttributeValue("code");
    }
+
+   public XmlTag getItemtypeXmlTag()
+   {
+      return itemtypeXmlTag;
+   }
+
+   public Module getModule()
+   {
+      return ((ModuleNode)getParent()).getModule();
+   }
+
 }

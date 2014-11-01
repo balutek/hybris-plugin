@@ -4,7 +4,9 @@ import action.checkbox.CheckboxElement;
 import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import callback.ModulesSelectionCallbackCheckbox;
+import cmp.tree.HybrisExplorerTree;
 import cmp.tree.HybrisExplorerTreeModel;
+import cmp.tree.listener.NavigateToLineListener;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -32,7 +34,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private ActionToolbar actionToolbar;
 
-   private Tree tree;
+   private HybrisExplorerTree tree;
 
    private HybrisExplorerTreeModel treeModel;
 
@@ -55,8 +57,9 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
       root = new SelectedModulesNode(selectedModules);
       treeModel = new HybrisExplorerTreeModel(root);
-      tree = new Tree(treeModel);
+      tree = new HybrisExplorerTree(project, treeModel);
       tree.setEditable(true);
+      tree.addMouseListener(new NavigateToLineListener(tree));
 
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
       CheckboxListPopupAction listPopupAction =
