@@ -5,7 +5,6 @@ import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import callback.ModulesSelectionCallbackCheckbox;
 import cmp.tree.HybrisExplorerTreeModel;
-import cmp.tree.HybrisExplorerTreeModelListener;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -21,6 +20,7 @@ import com.intellij.util.IconUtil;
 import data.RuntimeDataService;
 
 import javax.swing.*;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 /**
@@ -57,7 +57,6 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       treeModel = new HybrisExplorerTreeModel(root);
       tree = new Tree(treeModel);
       tree.setEditable(true);
-      treeModel.addTreeModelListener(new HybrisExplorerTreeModelListener(tree));
 
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
       CheckboxListPopupAction listPopupAction =
@@ -70,7 +69,9 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JComponent createContent()
    {
-      return new JBScrollPane(tree);
+      JBScrollPane scrollPaneWithTree = new JBScrollPane(tree);
+      scrollPaneWithTree.setBorder(BorderFactory.createEmptyBorder());
+      return scrollPaneWithTree;
    }
 
    private JComponent createToolbarPanel()
