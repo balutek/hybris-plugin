@@ -4,6 +4,7 @@ import com.intellij.openapi.module.Module;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,20 +12,18 @@ import java.util.List;
  */
 public class SelectedModulesNode extends DefaultMutableTreeNode
 {
-   private List<Module> selectedModules;
+   private List<Module> selectedModules = new ArrayList<Module>();
 
-   public SelectedModulesNode(List<Module> selectedModules)
+   public SelectedModulesNode(List<Module> initialList)
    {
-      this.selectedModules = selectedModules;
-
-      initialize();
+      initialize(initialList);
    }
 
-   private void initialize()
+   private void initialize(List<Module> initialList)
    {
-      for (Module selectedModule : selectedModules)
+      for (Module module : initialList)
       {
-         add(new ModuleNode(selectedModule));
+         add(new ModuleNode(module));
       }
    }
 

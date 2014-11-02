@@ -14,6 +14,8 @@ public class HybrisExplorerTree extends Tree
 
    public HybrisExplorerTree(Project project, HybrisExplorerTreeModel treeModel)
    {
+      super(treeModel);
+
       this.project = project;
       this.treeModel = treeModel;
    }
