@@ -17,12 +17,13 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.IconUtil;
 import data.RuntimeDataService;
 
 import javax.swing.*;
-import java.awt.event.MouseListener;
+import javax.swing.border.Border;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -58,8 +59,8 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       root = new SelectedModulesNode(selectedModules);
       treeModel = new HybrisExplorerTreeModel(root);
       tree = new HybrisExplorerTree(project, treeModel);
-      tree.setEditable(true);
       tree.addMouseListener(new NavigateToLineListener(tree));
+      tree.setCellRenderer(new DefaultTreeCellRenderer());
 
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
       CheckboxListPopupAction listPopupAction =
@@ -72,9 +73,21 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JComponent createContent()
    {
+      Border emptyBorder = BorderFactory.createEmptyBorder();
+
+      JPanel explorer = new JPanel(new GridLayout(2,1));
+      explorer.setBorder(emptyBorder);
+
       JBScrollPane scrollPaneWithTree = new JBScrollPane(tree);
-      scrollPaneWithTree.setBorder(BorderFactory.createEmptyBorder());
-      return scrollPaneWithTree;
+      scrollPaneWithTree.setBorder(emptyBorder);
+
+      JBScrollPane scrollPaneWithAttributes = new JBScrollPane();
+      scrollPaneWithAttributes.setBorder(emptyBorder);
+//      scrollPaneWithAttributes.h
+
+      explorer.add(scrollPaneWithTree);
+//      explorer.add(scrollPaneWithAttributes);
+      return explorer;
    }
 
    private JComponent createToolbarPanel()
