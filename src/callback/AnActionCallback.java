@@ -3,7 +3,7 @@ package callback;
 /**
  * @author Paweł Łabuda
  */
-public interface AnCheckboxActionCallback<T>
+public interface AnActionCallback<T>
 {
    T execute();
 }

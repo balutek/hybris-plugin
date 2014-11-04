@@ -9,7 +9,7 @@ import data.RuntimeDataService;
 /**
  * @author Paweł Łabuda
  */
-public class ModulesSelectionCallbackCheckbox implements AnCheckboxActionCallback<Void>
+public class ModulesSelectionCallback implements AnActionCallback<Void>
 {
    private Project project;
 
@@ -17,7 +17,7 @@ public class ModulesSelectionCallbackCheckbox implements AnCheckboxActionCallbac
 
    private SelectedModulesNode root;
 
-   public ModulesSelectionCallbackCheckbox(Project project, HybrisExplorerTreeModel treeModel)
+   public ModulesSelectionCallback(Project project, HybrisExplorerTreeModel treeModel)
    {
       this.treeModel = treeModel;
       this.project = project;

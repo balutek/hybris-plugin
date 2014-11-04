@@ -1,6 +1,6 @@
 package action.checkbox;
 
-import callback.AnCheckboxActionCallback;
+import callback.AnActionCallback;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.ex.CheckboxAction;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
@@ -20,7 +20,7 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
 
    private Icon buttonIcon;
 
-   private AnCheckboxActionCallback<Void> afterCheckboxSelectedCallback;
+   private AnActionCallback<Void> afterCheckboxSelectedCallback;
 
    public CheckboxListPopupAction(CheckboxElement[] checkboxElements, Icon icon)
    {
@@ -76,12 +76,12 @@ public class CheckboxListPopupAction extends AnAction implements CustomComponent
       checkboxListPopupMenu.getComponent().show(component, x, y);
    }
 
-   public AnCheckboxActionCallback<Void> getAfterCheckboxSelectedCallback()
+   public AnActionCallback<Void> getAfterCheckboxSelectedCallback()
    {
       return afterCheckboxSelectedCallback;
    }
 
-   public void setAfterCheckboxSelectedCallback(AnCheckboxActionCallback<Void> afterCheckboxSelectedCallback)
+   public void setAfterCheckboxSelectedCallback(AnActionCallback<Void> afterCheckboxSelectedCallback)
    {
       this.afterCheckboxSelectedCallback = afterCheckboxSelectedCallback;
    }
