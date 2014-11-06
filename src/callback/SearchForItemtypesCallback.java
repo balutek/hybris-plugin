@@ -1,6 +1,7 @@
 package callback;
 
 import cmp.tree.HybrisExplorerTreeModel;
+import data.RuntimeDataService;
 
 import java.awt.event.KeyEvent;
 
@@ -21,7 +22,8 @@ public class SearchForItemtypesCallback extends SearchForCallback
    {
       if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER && text != null && !text.isEmpty())
       {
-         treeModel.setSearchText(text);
+
+         RuntimeDataService.getInstance().setEnteredSearchText(text);
          treeModel.reload();
          return true;
       }

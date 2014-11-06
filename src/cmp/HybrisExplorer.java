@@ -32,8 +32,6 @@ import java.util.List;
  */
 public class HybrisExplorer extends SimpleToolWindowPanel
 {
-   private Project project;
-
    private ActionToolbar actionToolbar;
 
    private HybrisExplorerTree tree;
@@ -46,7 +44,8 @@ public class HybrisExplorer extends SimpleToolWindowPanel
    {
       super(true);
 
-      this.project = project;
+      // ugly way to initialize runtime data service
+      RuntimeDataService.initialize(project);
 
       initialize();
 
@@ -61,7 +60,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
-      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(project, treeModel));
+      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(treeModel));
       SearchFieldAction searchFieldAction = new SearchFieldAction(new SearchForItemtypesCallback(treeModel));
       actionGroup.add(listPopupAction);
       actionGroup.add(searchFieldAction);
@@ -71,11 +70,10 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private void initExplorerTree()
    {
-
-      List<Module> selectedModules = RuntimeDataService.getInstance(project).getSelectedModules();
+      List<Module> selectedModules = RuntimeDataService.getInstance().getSelectedModules();
       root = new SelectedModulesNode(selectedModules);
       treeModel = new HybrisExplorerTreeModel(root);
-      tree = new HybrisExplorerTree(project, treeModel);
+      tree = new HybrisExplorerTree(treeModel);
       tree.addMouseListener(new NavigateToLineListener(tree));
       tree.setCellRenderer(new HybrisExplorerTreeCellRenderer());
    }
@@ -106,6 +104,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private CheckboxElement[] createModuleCheckboxes()
    {
+      Project project = RuntimeDataService.getInstance().getProject();
       Module[] modules = ModuleManager.getInstance(project).getModules();
       CheckboxElement[] checkboxElements = new CheckboxElement[modules.length];
       for (int i = 0; i < modules.length; ++i)

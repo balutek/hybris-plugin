@@ -16,6 +16,7 @@ public class SelectedModulesNode extends DefaultMutableTreeNode
 
    public SelectedModulesNode(List<Module> initialList)
    {
+      super();
       initialize(initialList);
    }
 

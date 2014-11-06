@@ -1,21 +1,22 @@
 package cmp.tree.node;
 
+import cmp.tree.node.invisible.HideableChildrenTreeNode;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.xml.XmlTag;
 import data.RuntimeDataService;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.List;
 
 /**
  * @author Paweł Łabuda
  */
-public class ModuleNode extends DefaultMutableTreeNode
+public class ModuleNode extends HideableChildrenTreeNode
 {
    private Module module;
 
    public ModuleNode(Module module)
    {
+      super(module, true);
       this.module = module;
 
       initialize();
@@ -23,7 +24,7 @@ public class ModuleNode extends DefaultMutableTreeNode
 
    private void initialize()
    {
-      List<XmlTag> moduleItems = RuntimeDataService.getInstance(module.getProject()).getModuleItemsTags(module);
+      List<XmlTag> moduleItems = RuntimeDataService.getInstance().getModuleItemsTags(module);
 
       for (XmlTag moduleItem : moduleItems)
       {

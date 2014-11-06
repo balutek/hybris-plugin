@@ -1,6 +1,5 @@
 package cmp.tree.listener;
 
-import cmp.HybrisExplorer;
 import cmp.tree.HybrisExplorerTree;
 import cmp.tree.node.ItemtypeTagNode;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -8,14 +7,11 @@ import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.file.impl.FileManager;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
-import com.intellij.ui.DoubleClickListener;
-import com.intellij.ui.treeStructure.Tree;
+import data.RuntimeDataService;
 
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,9 +50,10 @@ public class NavigateToLineListener extends MouseAdapter
             int itemtypeOffset = itemtypeTagNode.getItemtypeXmlTag().getTextOffset();
             XmlFile moduleItemsXmlFile = getModuleXmlFile(itemtypeTagNode.getModule());
 
+            Project project = RuntimeDataService.getInstance().getProject();
             OpenFileDescriptor descriptor =
-                    new OpenFileDescriptor(tree.getProject(), moduleItemsXmlFile.getVirtualFile(), itemtypeOffset);
-            FileEditorManager.getInstance(tree.getProject()).openTextEditor(descriptor, true);
+                    new OpenFileDescriptor(project, moduleItemsXmlFile.getVirtualFile(), itemtypeOffset);
+            FileEditorManager.getInstance(project).openTextEditor(descriptor, true);
             return true;
          }
       }
@@ -66,7 +63,7 @@ public class NavigateToLineListener extends MouseAdapter
 
    private XmlFile getModuleXmlFile(Module module)
    {
-      Project project = tree.getProject();
+      Project project = RuntimeDataService.getInstance().getProject();
       PsiFile[] itemsXmlFiles = FilenameIndex.getFilesByName(project, module.getName() + "-items.xml",
            GlobalSearchScope.allScope(project));
       if(itemsXmlFiles.length > 0)

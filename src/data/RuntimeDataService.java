@@ -11,6 +11,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class RuntimeDataService
 
    private ConfigurationService configurationService;
 
+   // Todo : delete all places where reference to project is passed, use this service field instead
    private Project project;
 
    private HashMap<Module, List<XmlTag>> selectedModulesItemsTagsMap = new LinkedHashMap<Module, List<XmlTag>>();
@@ -36,23 +38,24 @@ public class RuntimeDataService
 
    private Module recentlyRemovedModule = null;
 
-   public static RuntimeDataService getInstance(Project project)
+   private String enteredSearchText = "";
+
+   public static void initialize(Project project)
    {
-      if(instance == null)
-      {
-         RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
-         runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
-         runtimeDataService.setProject(project);
-         runtimeDataService.initialize();
-         return runtimeDataService;
-      }
-      else
-      {
-         return instance;
-      }
+      RuntimeDataService runtimeDataService = ServiceManager.getService(project, RuntimeDataService.class);
+      RuntimeDataService.instance = runtimeDataService;
+      runtimeDataService.setConfigurationService(ConfigurationService.getInstance(project));
+      runtimeDataService.setProject(project);
+      runtimeDataService.loadPreviouslySelectedModules();
    }
 
-   private void initialize()
+   @NotNull
+   public static RuntimeDataService getInstance()
+   {
+      return instance;
+   }
+
+   private void loadPreviouslySelectedModules()
    {
       HashMap<String, Boolean> modulesSelectionMap = ConfigurationService.getInstance(project).getModulesSelectionMap();
       Module[] modules = ModuleManager.getInstance(project).getModules();
@@ -153,6 +156,11 @@ public class RuntimeDataService
       this.project = project;
    }
 
+   public Project getProject()
+   {
+      return project;
+   }
+
    public Module getRecentlyAddedModule()
    {
       return recentlyAddedModule;
@@ -171,5 +179,15 @@ public class RuntimeDataService
    public void setRecentlyRemovedModule(Module recentlyRemovedModule)
    {
       this.recentlyRemovedModule = recentlyRemovedModule;
+   }
+
+   public String getEnteredSearchText()
+   {
+      return enteredSearchText;
+   }
+
+   public void setEnteredSearchText(String enteredSearchText)
+   {
+      this.enteredSearchText = enteredSearchText;
    }
 }

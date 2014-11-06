@@ -12,8 +12,6 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class HybrisExplorerTreeModel extends DefaultTreeModel
 {
-   private String searchText = "";
-
    public HybrisExplorerTreeModel(SelectedModulesNode root)
    {
       super(root);
@@ -70,13 +68,4 @@ public class HybrisExplorerTreeModel extends DefaultTreeModel
       return position;
    }
 
-   public String getSearchText()
-   {
-      return searchText;
-   }
-
-   public void setSearchText(String searchText)
-   {
-      this.searchText = searchText;
-   }
 }

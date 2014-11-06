@@ -1,7 +1,6 @@
 package action.checkbox;
 
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import data.RuntimeDataService;
 
 /**
@@ -11,18 +10,15 @@ public class ModuleCheckbox implements CheckboxElement
 {
    private final Module module;
 
-   private final Project project;
-
    public ModuleCheckbox(Module module)
    {
       this.module = module;
-      this.project = module.getProject();
    }
 
    @Override
    public boolean isSelected()
    {
-      return RuntimeDataService.getInstance(project).isModuleSelected(module);
+      return RuntimeDataService.getInstance().isModuleSelected(module);
    }
 
    @Override
@@ -30,11 +26,11 @@ public class ModuleCheckbox implements CheckboxElement
    {
       if(state)
       {
-         RuntimeDataService.getInstance(project).selectModule(module);
+         RuntimeDataService.getInstance().selectModule(module);
       }
       else
       {
-         RuntimeDataService.getInstance(project).deselectModule(module);
+         RuntimeDataService.getInstance().deselectModule(module);
       }
    }
 

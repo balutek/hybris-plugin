@@ -3,7 +3,6 @@ package callback;
 import cmp.tree.HybrisExplorerTreeModel;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import data.RuntimeDataService;
 
 /**
@@ -11,16 +10,13 @@ import data.RuntimeDataService;
  */
 public class ModulesSelectionCallback implements AnActionCallback<Void>
 {
-   private Project project;
-
    private HybrisExplorerTreeModel treeModel;
 
    private SelectedModulesNode root;
 
-   public ModulesSelectionCallback(Project project, HybrisExplorerTreeModel treeModel)
+   public ModulesSelectionCallback(HybrisExplorerTreeModel treeModel)
    {
       this.treeModel = treeModel;
-      this.project = project;
 
       this.root = (SelectedModulesNode) treeModel.getRoot();
    }
@@ -28,7 +24,7 @@ public class ModulesSelectionCallback implements AnActionCallback<Void>
    @Override
    public Void execute()
    {
-      RuntimeDataService runtimeDataService = RuntimeDataService.getInstance(project);
+      RuntimeDataService runtimeDataService = RuntimeDataService.getInstance();
       Module recentlyAddedModule = runtimeDataService.getRecentlyAddedModule();
       Module recentlyRemovedModule = runtimeDataService.getRecentlyRemovedModule();
 
