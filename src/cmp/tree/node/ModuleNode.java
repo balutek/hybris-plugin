@@ -16,7 +16,6 @@ public class ModuleNode extends HideableChildrenTreeNode
 
    public ModuleNode(Module module)
    {
-      super(module, true);
       this.module = module;
 
       initialize();

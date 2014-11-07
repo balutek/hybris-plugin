@@ -22,7 +22,6 @@ public class SearchForItemtypesCallback extends SearchForCallback
    {
       if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER && text != null && !text.isEmpty())
       {
-
          RuntimeDataService.getInstance().setEnteredSearchText(text);
          treeModel.reload();
          return true;

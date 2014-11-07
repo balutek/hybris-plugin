@@ -18,7 +18,6 @@ public class ItemtypeTagNode extends DefaultMutableTreeNode implements HideableT
 
    public ItemtypeTagNode(XmlTag itemtypeXmlTag)
    {
-      super(itemtypeXmlTag, true);
       this.itemtypeXmlTag = itemtypeXmlTag;
    }
 

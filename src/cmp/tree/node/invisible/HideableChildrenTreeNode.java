@@ -11,16 +11,6 @@ public class HideableChildrenTreeNode extends DefaultMutableTreeNode
 {
    protected boolean isVisible = true;
 
-   public HideableChildrenTreeNode(Object userObject)
-   {
-      this(userObject, true);
-   }
-
-   public HideableChildrenTreeNode(Object userObject, boolean allowsChildren)
-   {
-      super(userObject, allowsChildren);
-   }
-
    @Override
    public TreeNode getChildAt(int index)
    {
@@ -54,21 +44,24 @@ public class HideableChildrenTreeNode extends DefaultMutableTreeNode
    public int getChildCount()
    {
       int amountOfVisibleNodes = 0;
-      Enumeration<TreeNode> nodeChildren = children.elements();
-      while (nodeChildren.hasMoreElements())
+      if(children != null)
       {
-         TreeNode child = nodeChildren.nextElement();
-         if(child instanceof HideableChildrenTreeNode)
+         Enumeration<TreeNode> nodeChildren = children.elements();
+         while (nodeChildren.hasMoreElements())
          {
-            HideableTreeNode invisibleTreeNode = (HideableTreeNode) child;
-            if (invisibleTreeNode.isVisible())
+            TreeNode child = nodeChildren.nextElement();
+            if(child instanceof HideableTreeNode)
+            {
+               HideableTreeNode invisibleTreeNode = (HideableTreeNode) child;
+               if (invisibleTreeNode.isVisible())
+               {
+                  ++amountOfVisibleNodes;
+               }
+            }
+            else
             {
                ++amountOfVisibleNodes;
             }
-         }
-         else
-         {
-            ++amountOfVisibleNodes;
          }
       }
       return amountOfVisibleNodes;
