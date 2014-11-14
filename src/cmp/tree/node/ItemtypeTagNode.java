@@ -41,14 +41,7 @@ public class ItemtypeTagNode extends DefaultMutableTreeNode implements HideableT
    public boolean isVisible()
    {
       String enteredSearchText = RuntimeDataService.getInstance().getEnteredSearchText();
-      if(!enteredSearchText.isEmpty())
-      {
-         return isVisible && toString().contains(enteredSearchText);
-      }
-      else
-      {
-         return isVisible;
-      }
+      return isVisible && toString().contains(enteredSearchText);
    }
 
    @Override

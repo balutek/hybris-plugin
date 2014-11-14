@@ -61,7 +61,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
       listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(treeModel));
-      SearchFieldAction searchFieldAction = new SearchFieldAction(new SearchForItemtypesCallback(treeModel));
+      SearchFieldAction searchFieldAction = new SearchFieldAction(new SearchForItemtypesCallback(tree, treeModel));
       actionGroup.add(listPopupAction);
       actionGroup.add(searchFieldAction);
       actionToolbar =

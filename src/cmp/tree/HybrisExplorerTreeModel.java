@@ -45,7 +45,7 @@ public class HybrisExplorerTreeModel extends DefaultTreeModel
       }
    }
 
-   private SelectedModulesNode getSelectedModulesNode()
+   public SelectedModulesNode getSelectedModulesNode()
    {
       return (SelectedModulesNode) getRoot();
    }

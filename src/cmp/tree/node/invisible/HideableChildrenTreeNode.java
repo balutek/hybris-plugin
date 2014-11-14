@@ -9,8 +9,6 @@ import java.util.Enumeration;
  */
 public class HideableChildrenTreeNode extends DefaultMutableTreeNode
 {
-   protected boolean isVisible = true;
-
    @Override
    public TreeNode getChildAt(int index)
    {
@@ -67,13 +65,4 @@ public class HideableChildrenTreeNode extends DefaultMutableTreeNode
       return amountOfVisibleNodes;
    }
 
-   public boolean isVisible()
-   {
-      return isVisible;
-   }
-
-   public void setVisible(boolean isVisible)
-   {
-      this.isVisible = isVisible;
-   }
 }
