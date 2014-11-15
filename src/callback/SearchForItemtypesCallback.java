@@ -36,7 +36,7 @@ public class SearchForItemtypesCallback extends SearchForCallback
       }
       else if(!keyEvent.isActionKey())
       {
-         this.text += keyEvent.getKeyChar();
+         this.text = text;
          RuntimeDataService.getInstance().setEnteredSearchText(this.text);
          reloadTreeAndKeepItsExpandState();
          return true;

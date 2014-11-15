@@ -9,6 +9,7 @@ import com.intellij.ui.SearchTextField;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
@@ -24,34 +25,26 @@ public class SearchFieldAction<T> extends AnAction implements CustomComponentAct
    {
       this.searchForCallback = searchForCallback;
 
-      searchTextField = new SearchTextField(true){
-         @Override
-         protected boolean preprocessEventForTextField(KeyEvent e)
-         {
-//            searchForCallback.setText(e.g);
-            searchForCallback.setKeyEvent(e);
-            searchForCallback.setClearEvent(false);
-            if(searchForCallback.execute())
-            {
-               e.consume();
-               return true;
-            }
-            else
-            {
-               return false;
-            }
-         }
-
-
-
+      searchTextField = new SearchTextField(true)
+      {
          @Override
          protected void onFieldCleared()
          {
-//            searchForCallback.setText(getText());
             searchForCallback.setClearEvent(true);
             searchForCallback.execute();
          }
       };
+      searchTextField.addKeyboardListener(new KeyAdapter()
+      {
+         @Override
+         public void keyTyped(KeyEvent e)
+         {
+            searchForCallback.setText(searchTextField.getText());
+            searchForCallback.setKeyEvent(e);
+            searchForCallback.setClearEvent(false);
+            searchForCallback.execute();
+         }
+      });
    }
 
    @Override
