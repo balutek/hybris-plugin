@@ -4,7 +4,9 @@ import cmp.tree.HybrisExplorerTree;
 import cmp.tree.HybrisExplorerTreeModel;
 import data.RuntimeDataService;
 
+import javax.swing.tree.TreePath;
 import java.awt.event.KeyEvent;
+import java.util.Enumeration;
 
 /**
  * @author Paweł Łabuda
@@ -19,25 +21,24 @@ public class SearchForItemtypesCallback extends SearchForCallback
    {
       this.tree = tree;
       this.treeModel = treeModel;
+
+      this.text = "";
    }
 
    @Override
-   public Boolean execute(String text, KeyEvent keyEvent)
+   public Boolean execute(String text, KeyEvent keyEvent, boolean isClearEvent)
    {
-      if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
+      if(isClearEvent)
       {
-         RuntimeDataService.getInstance().setEnteredSearchText(text);
-
-//         TreePath[] selectedPaths = tree.getExpandedDescendants(treeModel.getSelectedModulesNode());
-         treeModel.reload();
-//         for (TreePath selectedPath : selectedPaths)
-//         {
-//            Object selectedNode = selectedPath.getLastPathComponent();
-//            if(selectedNode instanceof ModuleNode)
-//            {
-//               treeModel.nodeChanged((TreeNode) selectedNode);
-//            }
-//         }
+         RuntimeDataService.getInstance().setEnteredSearchText("");
+         reloadTreeAndKeepItsExpandState();
+         return true;
+      }
+      else if(!keyEvent.isActionKey())
+      {
+         this.text += keyEvent.getKeyChar();
+         RuntimeDataService.getInstance().setEnteredSearchText(this.text);
+         reloadTreeAndKeepItsExpandState();
          return true;
       }
       else
@@ -45,4 +46,17 @@ public class SearchForItemtypesCallback extends SearchForCallback
          return false;
       }
    }
+
+   private void reloadTreeAndKeepItsExpandState()
+   {
+      TreePath rootPath = tree.getPathForRow(0);
+      Enumeration<TreePath> selectedPaths = tree.getExpandedDescendants(rootPath);
+      treeModel.reload();
+      while (selectedPaths.hasMoreElements())
+      {
+         TreePath expandedModule = selectedPaths.nextElement();
+         tree.expandPath(expandedModule);
+      }
+   }
+
 }

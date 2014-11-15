@@ -28,8 +28,9 @@ public class SearchFieldAction<T> extends AnAction implements CustomComponentAct
          @Override
          protected boolean preprocessEventForTextField(KeyEvent e)
          {
-            searchForCallback.setText(getText());
+//            searchForCallback.setText(e.g);
             searchForCallback.setKeyEvent(e);
+            searchForCallback.setClearEvent(false);
             if(searchForCallback.execute())
             {
                e.consume();
@@ -39,6 +40,16 @@ public class SearchFieldAction<T> extends AnAction implements CustomComponentAct
             {
                return false;
             }
+         }
+
+
+
+         @Override
+         protected void onFieldCleared()
+         {
+//            searchForCallback.setText(getText());
+            searchForCallback.setClearEvent(true);
+            searchForCallback.execute();
          }
       };
    }

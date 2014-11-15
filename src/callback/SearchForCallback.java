@@ -7,17 +7,19 @@ import java.awt.event.KeyEvent;
  */
 public abstract class SearchForCallback implements AnActionCallback<Boolean>
 {
-   private String text;
+   protected String text;
 
-   private KeyEvent keyEvent;
+   protected KeyEvent keyEvent;
+
+   private boolean isClearEvent = false;
 
    @Override
    public Boolean execute()
    {
-      return execute(text, keyEvent);
+      return execute(text, keyEvent, isClearEvent);
    }
 
-   public abstract Boolean execute(String text, KeyEvent keyEvent);
+   public abstract Boolean execute(String text, KeyEvent keyEvent, boolean isClearEvent);
 
    public String getText()
    {
@@ -37,5 +39,15 @@ public abstract class SearchForCallback implements AnActionCallback<Boolean>
    public void setKeyEvent(KeyEvent keyEvent)
    {
       this.keyEvent = keyEvent;
+   }
+
+   public boolean isClearEvent()
+   {
+      return isClearEvent;
+   }
+
+   public void setClearEvent(boolean isClearEvent)
+   {
+      this.isClearEvent = isClearEvent;
    }
 }
