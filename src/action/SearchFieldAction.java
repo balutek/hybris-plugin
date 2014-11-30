@@ -5,12 +5,11 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
+import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.SearchTextField;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javax.swing.event.DocumentEvent;
 
 /**
  * @author Paweł Łabuda
@@ -21,10 +20,15 @@ public class SearchFieldAction<T> extends AnAction implements CustomComponentAct
 
    private SearchForCallback searchForCallback;
 
-   public SearchFieldAction(@NotNull final SearchForCallback searchForCallback)
+   public SearchFieldAction(SearchForCallback searchForCallback)
    {
       this.searchForCallback = searchForCallback;
 
+      initListeners();
+   }
+
+   private void initListeners()
+   {
       searchTextField = new SearchTextField(true)
       {
          @Override
@@ -34,13 +38,12 @@ public class SearchFieldAction<T> extends AnAction implements CustomComponentAct
             searchForCallback.execute();
          }
       };
-      searchTextField.addKeyboardListener(new KeyAdapter()
+      searchTextField.getTextEditor().getDocument().addDocumentListener(new DocumentAdapter()
       {
          @Override
-         public void keyTyped(KeyEvent e)
+         protected void textChanged(DocumentEvent e)
          {
             searchForCallback.setText(searchTextField.getText());
-            searchForCallback.setKeyEvent(e);
             searchForCallback.setClearEvent(false);
             searchForCallback.execute();
          }

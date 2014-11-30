@@ -1,25 +1,15 @@
 package callback;
 
-import java.awt.event.KeyEvent;
-
 /**
  * @author Paweł Łabuda
  */
-public abstract class SearchForCallback implements AnActionCallback<Boolean>
+public abstract class SearchForCallback<RETURN> implements AnActionCallback<RETURN>
 {
    protected String text;
 
-   protected KeyEvent keyEvent;
+   protected boolean isClearEvent = false;
 
-   private boolean isClearEvent = false;
-
-   @Override
-   public Boolean execute()
-   {
-      return execute(text, keyEvent, isClearEvent);
-   }
-
-   public abstract Boolean execute(String text, KeyEvent keyEvent, boolean isClearEvent);
+   protected Object object;
 
    public String getText()
    {
@@ -31,16 +21,6 @@ public abstract class SearchForCallback implements AnActionCallback<Boolean>
       this.text = text;
    }
 
-   public KeyEvent getKeyEvent()
-   {
-      return keyEvent;
-   }
-
-   public void setKeyEvent(KeyEvent keyEvent)
-   {
-      this.keyEvent = keyEvent;
-   }
-
    public boolean isClearEvent()
    {
       return isClearEvent;
@@ -49,5 +29,15 @@ public abstract class SearchForCallback implements AnActionCallback<Boolean>
    public void setClearEvent(boolean isClearEvent)
    {
       this.isClearEvent = isClearEvent;
+   }
+
+   public Object getObject()
+   {
+      return object;
+   }
+
+   public void setObject(Object object)
+   {
+      this.object = object;
    }
 }

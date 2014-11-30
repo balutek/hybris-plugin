@@ -5,13 +5,12 @@ import cmp.tree.HybrisExplorerTreeModel;
 import data.RuntimeDataService;
 
 import javax.swing.tree.TreePath;
-import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 
 /**
  * @author Paweł Łabuda
  */
-public class SearchForItemtypesCallback extends SearchForCallback
+public class SearchForItemtypesCallback extends SearchForCallback<Void>
 {
    private HybrisExplorerTree tree;
 
@@ -21,30 +20,22 @@ public class SearchForItemtypesCallback extends SearchForCallback
    {
       this.tree = tree;
       this.treeModel = treeModel;
-
-      this.text = "";
    }
 
    @Override
-   public Boolean execute(String text, KeyEvent keyEvent, boolean isClearEvent)
+   public Void execute()
    {
       if(isClearEvent)
       {
          RuntimeDataService.getInstance().setEnteredSearchText("");
          reloadTreeAndKeepItsExpandState();
-         return true;
-      }
-      else if(!keyEvent.isActionKey())
-      {
-         this.text = text;
-         RuntimeDataService.getInstance().setEnteredSearchText(this.text);
-         reloadTreeAndKeepItsExpandState();
-         return true;
       }
       else
       {
-         return false;
+         RuntimeDataService.getInstance().setEnteredSearchText(this.text);
+         reloadTreeAndKeepItsExpandState();
       }
+      return null;
    }
 
    private void reloadTreeAndKeepItsExpandState()
