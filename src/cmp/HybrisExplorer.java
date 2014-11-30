@@ -76,6 +76,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
       tree = new HybrisExplorerTree(treeModel);
       tree.addMouseListener(new NavigateToLineListener(tree));
       tree.setCellRenderer(new HybrisExplorerTreeCellRenderer());
+      tree.setRootVisible(false);
    }
 
    private JComponent createContent()

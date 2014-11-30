@@ -5,7 +5,10 @@ import cmp.tree.HybrisExplorerTreeModel;
 import data.RuntimeDataService;
 
 import javax.swing.tree.TreePath;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Paweł Łabuda
@@ -40,13 +43,31 @@ public class SearchForItemtypesCallback extends SearchForCallback<Void>
 
    private void reloadTreeAndKeepItsExpandState()
    {
-      TreePath rootPath = tree.getPathForRow(0);
-      Enumeration<TreePath> selectedPaths = tree.getExpandedDescendants(rootPath);
+      TreePath rootPath = tree.getRootPath();
+      ArrayList<TreePath> expandedNodes = new ArrayList<TreePath>();
+      collectExpandedNodes(expandedNodes, rootPath);
       treeModel.reload();
+      expandNodes(expandedNodes);
+
+   }
+
+   private void collectExpandedNodes(List<TreePath> expandedNodes, TreePath nodePath)
+   {
+      Enumeration<TreePath> selectedPaths = tree.getExpandedDescendants(nodePath);
       while (selectedPaths.hasMoreElements())
       {
-         TreePath expandedModule = selectedPaths.nextElement();
-         tree.expandPath(expandedModule);
+         TreePath expandedDescendant = selectedPaths.nextElement();
+         expandedNodes.add(expandedDescendant);
+         collectExpandedNodes(expandedNodes, expandedDescendant);
+      }
+   }
+
+   private void expandNodes(List<TreePath> nodes)
+   {
+      Iterator<TreePath> nodesIterator = nodes.iterator();
+      while(nodesIterator.hasNext())
+      {
+         tree.expandPath(nodesIterator.next());
       }
    }
 
