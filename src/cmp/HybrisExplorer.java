@@ -6,11 +6,12 @@ import action.checkbox.CheckboxListPopupAction;
 import action.checkbox.ModuleCheckbox;
 import callback.ModulesSelectionCallback;
 import callback.SearchForItemtypesCallback;
+import cmp.attr.HybrisAttributesPanel;
 import cmp.tree.HybrisExplorerTree;
 import cmp.tree.HybrisExplorerTreeCellRenderer;
 import cmp.tree.HybrisExplorerTreeModel;
 import cmp.tree.listener.NavigateToLineListener;
-import cmp.tree.listener.ShowItemtypeAttributesListener;
+import cmp.tree.listener.TreeNodeSelectionListener;
 import cmp.tree.node.SelectedModulesNode;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
@@ -41,7 +42,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
    private JBScrollPane itemtypesScrollPane;
 
-   private JBScrollPane attributesScrollPane;
+   private HybrisAttributesPanel attributesPanel;
 
    private HybrisExplorerTree tree;
 
@@ -73,32 +74,18 @@ public class HybrisExplorer extends SimpleToolWindowPanel
    {
       Border emptyBorder = BorderFactory.createEmptyBorder();
 
-      explorer = new JBPanel(new GridLayout(2,1));
+      explorer = new JBPanel(new BorderLayout());
       explorer.setBorder(emptyBorder);
 
       itemtypesScrollPane = new JBScrollPane(tree);
       itemtypesScrollPane.setBorder(emptyBorder);
 
-      SimpleToolWindowPanel attributes = new SimpleToolWindowPanel(true, true);
+      attributesPanel = new HybrisAttributesPanel();
+      attributesPanel.setBorder(emptyBorder);
+      tree.addMouseListener(new TreeNodeSelectionListener(attributesPanel));
 
-      final DefaultActionGroup actionGroup = new DefaultActionGroup();
-      CheckboxListPopupAction listPopupAction =
-              new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
-      listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(treeModel));
-      SearchFieldAction searchFieldAction = new SearchFieldAction(new SearchForItemtypesCallback(tree, treeModel));
-      actionGroup.add(listPopupAction);
-      actionGroup.add(searchFieldAction);
-      ActionToolbar secondActionToolbar =
-              ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
-      attributes.setToolbar(secondActionToolbar.getComponent());
-      attributes.setContent(new JLabel("JA PIERDDDDDDDDDDDD"));
-
-      attributesScrollPane = new JBScrollPane(attributes);
-      attributesScrollPane.setBorder(emptyBorder);
-      tree.addMouseListener(new ShowItemtypeAttributesListener(attributesScrollPane));
-
-      explorer.add(itemtypesScrollPane);
-      explorer.add(attributesScrollPane);
+      explorer.add(itemtypesScrollPane, BorderLayout.CENTER);
+      explorer.add(attributesPanel, BorderLayout.SOUTH);
    }
 
    private void initExplorerTree()
@@ -115,14 +102,17 @@ public class HybrisExplorer extends SimpleToolWindowPanel
    private void initModuleChooser()
    {
       final DefaultActionGroup actionGroup = new DefaultActionGroup();
+
       CheckboxListPopupAction listPopupAction =
               new CheckboxListPopupAction(createModuleCheckboxes(), IconUtil.getAddFolderIcon());
       listPopupAction.setAfterCheckboxSelectedCallback(new ModulesSelectionCallback(treeModel));
+
       SearchFieldAction searchFieldAction = new SearchFieldAction(new SearchForItemtypesCallback(tree, treeModel));
+
       actionGroup.add(listPopupAction);
       actionGroup.add(searchFieldAction);
-      actionToolbar =
-              ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
+
+      actionToolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, actionGroup, true);
    }
 
 
