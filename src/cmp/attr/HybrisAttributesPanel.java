@@ -14,7 +14,6 @@ public class HybrisAttributesPanel extends SimpleToolWindowPanel
    {
       super(true);
 
-//      setToo
       setContent(new JLabel("Jestem content z owego panelu :)"));
    }
 
@@ -24,5 +23,7 @@ public class HybrisAttributesPanel extends SimpleToolWindowPanel
 
 //      ActionButton hidePanelAction = new ActionButton()
    }
+
+
 
 }

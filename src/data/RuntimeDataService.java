@@ -6,12 +6,12 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.XmlElementVisitor;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import org.jetbrains.annotations.NotNull;
+import util.PluginXmlUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,29 +116,7 @@ public class RuntimeDataService
 
       XmlFile itemsXml = (XmlFile) itemsXmlPsiFiles[0].getViewProvider().getPsi(StdLanguages.XML);
 
-      final List<XmlTag> itemsXmlTags = new ArrayList<XmlTag>();
-
-      new XmlElementVisitor()
-      {
-         @Override
-         public void visitXmlTag(XmlTag tag)
-         {
-            if(XML_TAG_NAME_ITEMTYPE.equals(tag.getName()))
-            {
-               itemsXmlTags.add(tag);
-            }
-            else
-            {
-               XmlTag[] subtags = tag.getSubTags();
-               for (XmlTag subtag : subtags)
-               {
-                  visitXmlTag(subtag);
-               }
-            }
-         }
-      }.visitXmlTag(itemsXml.getRootTag());
-
-      return itemsXmlTags;
+      return PluginXmlUtil.findTagsByName(itemsXml.getRootTag(), XML_TAG_NAME_ITEMTYPE);
    }
 
    public List<XmlTag> getModuleItemsTags(Module module)
