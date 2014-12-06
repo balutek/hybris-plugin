@@ -1,6 +1,8 @@
 package cmp.tree.listener;
 
-import javax.swing.*;
+import cmp.attr.HybrisAttributesPanel;
+import cmp.tree.node.ItemtypeTagNode;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -9,19 +11,21 @@ import java.awt.event.MouseEvent;
  */
 public class TreeNodeSelectionListener extends MouseAdapter
 {
-   private JPanel panel;
+   private HybrisAttributesPanel hybrisAttributesPanel;
 
-   public TreeNodeSelectionListener(JPanel panel)
+   public TreeNodeSelectionListener(HybrisAttributesPanel hybrisAttributesPanel)
    {
-      this.panel = panel;
+      this.hybrisAttributesPanel = hybrisAttributesPanel;
    }
 
    @Override
    public void mouseClicked(MouseEvent e)
    {
-      if(e.getClickCount() == 2)
+      if(e.getClickCount() == 2 && e.getSource() instanceof ItemtypeTagNode)
       {
-         panel.setVisible(true);
+         ItemtypeTagNode clickedNode = (ItemtypeTagNode) e.getSource();
+         hybrisAttributesPanel.setVisible(true);
+         hybrisAttributesPanel.reloadAttributesPanel(clickedNode.getItemtypeXmlTag());
       }
    }
 }

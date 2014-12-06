@@ -2,7 +2,6 @@ package cmp.attr.list;
 
 import com.intellij.ui.table.JBTable;
 
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 /**
@@ -13,11 +12,13 @@ public class AttributesTable extends JBTable
    public AttributesTable(TableModel model)
    {
       super(model);
+
+      setC
    }
 
-   @Override
-   public void setDefaultRenderer(Class<?> columnClass, TableCellRenderer renderer)
+   public AttributesTableModel getAttributesTableModel()
    {
-      super.setDefaultRenderer(columnClass, renderer);
+      return (AttributesTableModel) getModel();
    }
+
 }
