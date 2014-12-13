@@ -1,5 +1,6 @@
 package data;
 
+import cmp.tree.node.ItemtypeTagNode;
 import com.intellij.lang.StdLanguages;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
@@ -37,6 +38,8 @@ public class RuntimeDataService
    private Module recentlyAddedModule = null;
 
    private Module recentlyRemovedModule = null;
+
+   private ItemtypeTagNode selectedItemtypeTagNode;
 
    private String enteredSearchText = "";
 
@@ -157,6 +160,16 @@ public class RuntimeDataService
    public void setRecentlyRemovedModule(Module recentlyRemovedModule)
    {
       this.recentlyRemovedModule = recentlyRemovedModule;
+   }
+
+   public ItemtypeTagNode getSelectedItemtypeTagNode()
+   {
+      return selectedItemtypeTagNode;
+   }
+
+   public void setSelectedItemtypeTagNode(ItemtypeTagNode selectedItemtypeTagNode)
+   {
+      this.selectedItemtypeTagNode = selectedItemtypeTagNode;
    }
 
    public String getEnteredSearchText()

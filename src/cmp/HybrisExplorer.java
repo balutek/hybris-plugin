@@ -82,7 +82,7 @@ public class HybrisExplorer extends SimpleToolWindowPanel
 
       attributesPanel = new HybrisAttributesPanel();
       attributesPanel.setBorder(emptyBorder);
-      tree.addMouseListener(new TreeNodeSelectionListener(attributesPanel));
+      tree.addMouseListener(new TreeNodeSelectionListener(tree, attributesPanel));
 
       explorer.add(itemtypesScrollPane, BorderLayout.CENTER);
       explorer.add(attributesPanel, BorderLayout.SOUTH);

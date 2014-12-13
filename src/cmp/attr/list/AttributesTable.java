@@ -12,8 +12,6 @@ public class AttributesTable extends JBTable
    public AttributesTable(TableModel model)
    {
       super(model);
-
-      setC
    }
 
    public AttributesTableModel getAttributesTableModel()
