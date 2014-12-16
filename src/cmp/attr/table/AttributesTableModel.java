@@ -75,7 +75,7 @@ public class AttributesTableModel extends AbstractTableModel
          XmlTag attributeXmlTag = attributesIterator.next();
 
          Object[] attributeProperties = new Object[5];
-         attributeProperties[0] = attributeXmlTag.getAttribute(ATTRIBUTE_XML_ELEMENT_QUALIFIER_ATTRIBUTE_NAME).getValue();
+         attributeProperties[0] = attributeXmlTag.getAttributeValue(ATTRIBUTE_XML_ELEMENT_QUALIFIER_ATTRIBUTE_NAME);
 
          List<XmlTag> attributeModifiersXmlTags = PluginXmlUtil.findTagsByName(attributeXmlTag, MODIFIERS_XML_ELEMENT_NAME);
 
