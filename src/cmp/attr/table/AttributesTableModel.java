@@ -1,4 +1,4 @@
-package cmp.attr.list;
+package cmp.attr.table;
 
 import com.intellij.psi.xml.XmlTag;
 import util.PluginXmlUtil;
@@ -14,6 +14,8 @@ import java.util.List;
 public class AttributesTableModel extends AbstractTableModel
 {
    public static final String ATTRIBUTE_XML_ELEMENT_NAME = "attribute";
+
+   public static final String ATTRIBUTE_XML_ELEMENT_QUALIFIER_ATTRIBUTE_NAME = "qualifier";
 
    public static final String ATTRIBUTE_XML_ELEMENT_READ_ATTRIBUTE_NAME = "read";
 
@@ -73,7 +75,7 @@ public class AttributesTableModel extends AbstractTableModel
          XmlTag attributeXmlTag = attributesIterator.next();
 
          Object[] attributeProperties = new Object[5];
-         attributeProperties[0] = attributeXmlTag.getName();
+         attributeProperties[0] = attributeXmlTag.getAttribute(ATTRIBUTE_XML_ELEMENT_QUALIFIER_ATTRIBUTE_NAME).getValue();
 
          List<XmlTag> attributeModifiersXmlTags = PluginXmlUtil.findTagsByName(attributeXmlTag, MODIFIERS_XML_ELEMENT_NAME);
 
@@ -86,7 +88,8 @@ public class AttributesTableModel extends AbstractTableModel
                     attributeModifiersXmlTag.getAttributeValue(ATTRIBUTE_XML_ELEMENT_WRITE_ATTRIBUTE_NAME));
             Boolean search = Boolean.valueOf(
                     attributeModifiersXmlTag.getAttributeValue(ATTRIBUTE_XML_ELEMENT_SEARCH_ATTRIBUTE_NAME));
-            Boolean required = !Boolean.valueOf(attributeModifiersXmlTag.getAttributeValue(ATTRIBUTE_XML_ELEMENT_OPTIONAL_ATTRIBUTE_NAME));
+            Boolean required = !Boolean.valueOf(
+                    attributeModifiersXmlTag.getAttributeValue(ATTRIBUTE_XML_ELEMENT_OPTIONAL_ATTRIBUTE_NAME));
             attributeProperties[1] = read;
             attributeProperties[2] = write;
             attributeProperties[3] = search;

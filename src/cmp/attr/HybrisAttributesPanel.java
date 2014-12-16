@@ -1,7 +1,7 @@
 package cmp.attr;
 
-import cmp.attr.list.AttributesTable;
-import cmp.attr.list.AttributesTableModel;
+import cmp.attr.table.AttributesTable;
+import cmp.attr.table.AttributesTableModel;
 import cmp.tree.node.ItemtypeTagNode;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
